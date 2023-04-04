@@ -1,4 +1,4 @@
-import { Trade, TradeType } from '@wagyu-swap/sdk'
+import { Trade, TradeType } from '@dexcore-swap/sdk'
 import { Text } from 'packages/uikit'
 import { Field } from 'state/swap/actions'
 import { useTranslation } from 'contexts/Localization'

@@ -1,7 +1,7 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { ChainId } from '@wagyu-swap/sdk'
+import { ChainId } from '@dexcore-swap/sdk'
 import { BscConnector } from '@binance-chain/bsc-connector'
 import { ConnectorNames } from 'packages/uikit'
 import { hexlify } from '@ethersproject/bytes'

@@ -1,4 +1,4 @@
-import { Currency, Token } from '@wagyu-swap/sdk'
+import { Currency, Token } from '@dexcore-swap/sdk'
 import { Button, Text, Modal, useModal, InjectedModalProps, Link } from 'packages/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'

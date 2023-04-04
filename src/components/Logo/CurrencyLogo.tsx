@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@wagyu-swap/sdk'
+import { Currency, ETHER, Token } from '@dexcore-swap/sdk'
 import { VelasIcon } from 'packages/uikit'
 import { useMemo } from 'react'
 import styled from 'styled-components'

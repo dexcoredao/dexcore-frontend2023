@@ -1,4 +1,4 @@
-import { ChainId } from '@wagyu-swap/sdk'
+import { ChainId } from '@dexcore-swap/sdk'
 import { CHAIN_ID } from 'config/constants/networks'
 
 const chainId = parseInt(CHAIN_ID, 10) as ChainId

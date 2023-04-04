@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Token, Currency } from '@wagyu-swap/sdk'
+import { Token, Currency } from '@dexcore-swap/sdk'
 import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid } from 'packages/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import { useAddUserToken } from 'state/user/hooks'

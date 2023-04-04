@@ -1,4 +1,4 @@
-import { ChainId, Currency, currencyEquals, ETHER, Token } from '@wagyu-swap/sdk'
+import { ChainId, Currency, currencyEquals, ETHER, Token } from '@dexcore-swap/sdk'
 import { Text } from 'packages/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'

@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Percent, Token } from '@wagyu-swap/sdk'
+import { ChainId, JSBI, Percent, Token } from '@dexcore-swap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
 import { mainnetTokens, testnetTokens } from './tokens'
 import addresses from './addresses.json'

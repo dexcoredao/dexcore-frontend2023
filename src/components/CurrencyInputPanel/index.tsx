@@ -1,4 +1,4 @@
-import { Currency, Pair, Token } from '@wagyu-swap/sdk'
+import { Currency, Pair, Token } from '@dexcore-swap/sdk'
 import { Button, ChevronDownIcon, Text, useModal, Flex, Box, MetamaskIcon } from 'packages/uikit'
 import styled from 'styled-components'
 import { registerToken } from 'utils/wallet'

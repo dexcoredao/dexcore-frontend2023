@@ -1,4 +1,4 @@
-import { FACTORY_ADDRESS } from '@wagyu-swap/sdk'
+import { FACTORY_ADDRESS } from '@dexcore-swap/sdk'
 import { getUnixTime, sub } from 'date-fns'
 import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'

@@ -1,4 +1,4 @@
-import { Trade, Route, Token, ChainId, Pair, TokenAmount, JSBI, TradeType } from '@wagyu-swap/sdk'
+import { Trade, Route, Token, ChainId, Pair, TokenAmount, JSBI, TradeType } from '@dexcore-swap/sdk'
 import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from 'config/constants'
 import { isTradeBetter } from './trades'
 

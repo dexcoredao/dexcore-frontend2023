@@ -2,7 +2,7 @@ import map from 'lodash/map'
 import omitBy from 'lodash/omitBy'
 import erc20ABI from 'config/abi/erc20.json'
 import tokens from 'config/constants/tokens'
-import { Token } from '@wagyu-swap/sdk'
+import { Token } from '@dexcore-swap/sdk'
 import multicall from 'utils/multicall'
 
 // remove VLX because it's not a Bep20 token

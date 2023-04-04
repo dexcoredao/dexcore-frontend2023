@@ -1,5 +1,5 @@
 import { Modal, ModalBody, Text, Image, Button, Link, OpenNewIcon } from 'packages/uikit'
-import { Token } from '@wagyu-swap/sdk'
+import { Token } from '@dexcore-swap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import getTokenLogoURL from 'utils/getTokenLogoURL'
 

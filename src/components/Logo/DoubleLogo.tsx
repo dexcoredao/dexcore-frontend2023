@@ -1,4 +1,4 @@
-import { Currency } from '@wagyu-swap/sdk'
+import { Currency } from '@dexcore-swap/sdk'
 import styled from 'styled-components'
 import CurrencyLogo from './CurrencyLogo'
 

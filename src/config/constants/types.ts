@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Token } from '@wagyu-swap/sdk'
+import { Token } from '@dexcore-swap/sdk'
 
 export type TranslatableText =
   | string

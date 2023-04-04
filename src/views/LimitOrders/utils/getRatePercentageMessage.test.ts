@@ -1,4 +1,4 @@
-import { JSBI, Price, Token } from '@wagyu-swap/sdk'
+import { JSBI, Price, Token } from '@dexcore-swap/sdk'
 import getRatePercentageDifference from './getRatePercentageDifference'
 import { getRatePercentageMessage, PercentageDirection } from './getRatePercentageMessage'
 

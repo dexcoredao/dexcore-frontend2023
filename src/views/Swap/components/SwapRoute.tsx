@@ -1,5 +1,5 @@
 import { Fragment, memo } from 'react'
-import { Trade } from '@wagyu-swap/sdk'
+import { Trade } from '@dexcore-swap/sdk'
 import { Text, Flex, ChevronRightIcon } from 'packages/uikit'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 

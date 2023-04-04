@@ -1,4 +1,4 @@
-import { Token, TokenAmount } from '@wagyu-swap/sdk'
+import { Token, TokenAmount } from '@dexcore-swap/sdk'
 import { useMemo } from 'react'
 import { useAllTokenBalances } from '../../state/wallet/hooks'
 

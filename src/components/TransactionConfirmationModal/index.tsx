@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { ChainId, Currency, Token } from '@wagyu-swap/sdk'
+import { ChainId, Currency, Token } from '@dexcore-swap/sdk'
 import styled from 'styled-components'
 import {
   Button,

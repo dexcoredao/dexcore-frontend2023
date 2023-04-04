@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@wagyu-swap/sdk'
+import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@dexcore-swap/sdk'
 import { Button, Text, AddIcon, CardBody, Message, useModal } from 'packages/uikit'
 import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported } from 'hooks/Trades'

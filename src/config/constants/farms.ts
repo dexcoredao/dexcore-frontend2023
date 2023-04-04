@@ -1,7 +1,7 @@
 import { serializeTokens } from './tokens'
 import { SerializedFarmConfig } from './types'
 import { CHAIN_ID } from './networks'
-import { ChainId } from '@wagyu-swap/sdk'
+import { ChainId } from '@dexcore-swap/sdk'
 
 const serializedTokens = serializeTokens()
 

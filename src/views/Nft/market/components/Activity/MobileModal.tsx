@@ -1,5 +1,5 @@
 import { InjectedModalProps, Modal, Flex, Text, Button, Link, VelasIcon, Box } from 'packages/uikit'
-import { Price } from '@wagyu-swap/sdk'
+import { Price } from '@dexcore-swap/sdk'
 import useTheme from 'hooks/useTheme'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { LightGreyCard } from 'components/Card'

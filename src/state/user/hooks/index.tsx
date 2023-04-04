@@ -1,4 +1,4 @@
-import { ChainId, Pair, Token } from '@wagyu-swap/sdk'
+import { ChainId, Pair, Token } from '@dexcore-swap/sdk'
 import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
 import farms from 'config/constants/farms'

@@ -1,4 +1,4 @@
-import { Price } from '@wagyu-swap/sdk'
+import { Price } from '@dexcore-swap/sdk'
 import { Flex, Text } from 'packages/uikit'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'

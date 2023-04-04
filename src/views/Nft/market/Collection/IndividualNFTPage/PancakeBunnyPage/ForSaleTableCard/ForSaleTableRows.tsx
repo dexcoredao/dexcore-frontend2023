@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Price } from '@wagyu-swap/sdk'
+import { Price } from '@dexcore-swap/sdk'
 import { Button, Grid, Text, Flex, Box, VelasIcon, useModal, Skeleton } from 'packages/uikit'
 import { formatNumber } from 'utils/formatBalance'
 import { ContextApi } from 'contexts/Localization/types'

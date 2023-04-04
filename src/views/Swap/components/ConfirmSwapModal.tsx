@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { currencyEquals, Trade } from '@wagyu-swap/sdk'
+import { currencyEquals, Trade } from '@dexcore-swap/sdk'
 import { InjectedModalProps } from 'packages/uikit'
 import { useTranslation } from 'contexts/Localization'
 import TransactionConfirmationModal, {

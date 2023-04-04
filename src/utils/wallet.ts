@@ -1,7 +1,7 @@
 // Set of helper functions to facilitate wallet setup
 
 import { ExternalProvider } from '@ethersproject/providers'
-import { ChainId } from '@wagyu-swap/sdk'
+import { ChainId } from '@dexcore-swap/sdk'
 import { BAD_SRCS } from 'components/Logo/Logo'
 import { BASE_VELAS_SCAN_URLS } from 'config'
 import { nodes } from './getRpcUrl'

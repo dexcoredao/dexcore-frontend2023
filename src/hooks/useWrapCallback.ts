@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, ETHER, WETH } from '@wagyu-swap/sdk'
+import { Currency, currencyEquals, ETHER, WETH } from '@dexcore-swap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'

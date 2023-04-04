@@ -5,7 +5,7 @@ import {
   ImageProps,
 } from 'packages/uikit'
 import tokens from 'config/constants/tokens'
-import { Token } from '@wagyu-swap/sdk'
+import { Token } from '@dexcore-swap/sdk'
 import getTokenLogoURL from 'utils/getTokenLogoURL'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {

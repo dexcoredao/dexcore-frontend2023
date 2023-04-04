@@ -9,7 +9,7 @@ import { CHAIN_ID } from 'config/constants/networks'
 import { PoolCategory } from 'config/constants/types'
 import { serializeTokens } from 'config/constants/tokens'
 import { fetchUserStakeBalances, fetchUserPendingRewards } from './fetchPoolsUser'
-import { ChainId } from '@wagyu-swap/sdk'
+import { ChainId } from '@dexcore-swap/sdk'
 export interface PoolsState {
   data: SerializedPool
   userDataLoaded: boolean

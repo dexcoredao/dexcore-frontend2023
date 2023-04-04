@@ -1,4 +1,4 @@
-import { JSBI, Token, TokenAmount } from '@wagyu-swap/sdk'
+import { JSBI, Token, TokenAmount } from '@dexcore-swap/sdk'
 import getPriceForOneToken from './getPriceForOneToken'
 
 const WAG = new Token(56, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'WAG', 'WagyuSwap Token')
