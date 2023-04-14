@@ -1,10 +1,11 @@
-import { memo, useCallback, useMemo, useState, useEffect } from 'react'
+import React, { memo, useCallback, useMemo, useState, useEffect } from 'react'
 import { Button, Text, CheckmarkIcon, CogIcon, Input, Toggle, LinkExternal, useTooltip } from '@pancakeswap/uikit'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { TokenList, Version } from '@uniswap/token-lists'
 import Card from 'components/Card'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
+import { parseENSAddress } from 'utils/ENS/parseENSAddress'
 import { useTranslation } from 'contexts/Localization'
 import useFetchListCallback from '../../hooks/useFetchListCallback'
 
@@ -17,6 +18,8 @@ import Column, { AutoColumn } from '../Layout/Column'
 import { ListLogo } from '../Logo'
 import Row, { RowFixed, RowBetween } from '../Layout/Row'
 import { CurrencyModalView } from './types'
+import astrologo from '../../style/logo.png'
+
 
 function listVersionLabel(version: Version): string {
   return `v${version.major}.${version.minor}.${version.patch}`
@@ -94,13 +97,13 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
     <RowWrapper active={isActive} key={listUrl} id={listUrlRowHTMLId(listUrl)}>
       {tooltipVisible && tooltip}
       {list.logoURI ? (
-        <ListLogo size="40px" style={{ marginRight: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
+        <img  style={{ marginRight: '1rem',height:"40px"}} src={astrologo} alt={`${list.name} list logo`} />
       ) : (
         <div style={{ width: '24px', height: '24px', marginRight: '1rem' }} />
       )}
       <Column style={{ flex: '1' }}>
         <Row>
-          <Text bold>{list.name}</Text>
+          <Text bold>Elves DEX Extended</Text>
         </Row>
         <RowFixed mt="4px">
           <Text fontSize="12px" mr="6px" textTransform="lowercase">
@@ -162,7 +165,7 @@ function ManageLists({
   const fetchList = useFetchListCallback()
 
   const validUrl: boolean = useMemo(() => {
-    return uriToHttp(listUrlInput).length > 0
+    return uriToHttp(listUrlInput).length > 0 || Boolean(parseENSAddress(listUrlInput))
   }, [listUrlInput])
 
   const sortedLists = useMemo(() => {
@@ -185,12 +188,6 @@ function ManageLists({
         }
 
         if (l1 && l2) {
-          // Always make PancakeSwap list in top.
-          const keyword = 'pancakeswap'
-          if (l1.name.toLowerCase().includes(keyword) || l2.name.toLowerCase().includes(keyword)) {
-            return -1
-          }
-
           return l1.name.toLowerCase() < l2.name.toLowerCase()
             ? -1
             : l1.name.toLowerCase() === l2.name.toLowerCase()
@@ -247,7 +244,7 @@ function ManageLists({
           <Input
             id="list-add-input"
             scale="lg"
-            placeholder={t('https:// or ipfs://')}
+            placeholder={t('https:// or ipfs:// or ENS name')}
             value={listUrlInput}
             onChange={handleInput}
           />

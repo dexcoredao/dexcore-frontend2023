@@ -1,54 +1,33 @@
-import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
-import useSWR, { useSWRConfig } from 'swr'
+import useInterval from 'hooks/useInterval'
+import useIsWindowVisible from 'hooks/useIsWindowVisible'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from 'state'
 import { simpleRpcProvider } from 'utils/providers'
-import useSWRImmutable from 'swr/immutable'
+import { setBlock } from '.'
+import { State } from '../types'
 
-const REFRESH_BLOCK_INTERVAL = 6000
+export const usePollBlockNumber = (refreshTime = 6000) => {
+  const dispatch = useAppDispatch()
+  const isWindowVisible = useIsWindowVisible()
 
-export const usePollBlockNumber = () => {
-  const { cache, mutate } = useSWRConfig()
-
-  const { data } = useSWR(
-    'blockNumber',
-    async () => {
-      const blockNumber = await simpleRpcProvider.getBlockNumber()
-      if (!cache.get('initialBlockNumber')) {
-        mutate('initialBlockNumber', blockNumber)
+  useInterval(
+    () => {
+      const fetchBlock = async () => {
+        const blockNumber = await simpleRpcProvider.getBlockNumber()
+        dispatch(setBlock(blockNumber))
       }
-      return blockNumber
-    },
-    {
-      refreshInterval: REFRESH_BLOCK_INTERVAL,
-    },
-  )
 
-  useSWR(
-    [FAST_INTERVAL, 'blockNumber'],
-    async () => {
-      return data
+      fetchBlock()
     },
-    {
-      refreshInterval: FAST_INTERVAL,
-    },
-  )
-
-  useSWR(
-    [SLOW_INTERVAL, 'blockNumber'],
-    async () => {
-      return data
-    },
-    {
-      refreshInterval: SLOW_INTERVAL,
-    },
+    isWindowVisible ? refreshTime : null,
+    true,
   )
 }
 
-export const useCurrentBlock = (): number => {
-  const { data: currentBlock = 0 } = useSWRImmutable('blockNumber')
-  return currentBlock
+export const useBlock = () => {
+  return useSelector((state: State) => state.block)
 }
 
-export const useInitialBlock = (): number => {
-  const { data: initialBlock = 0 } = useSWRImmutable('initialBlockNumber')
-  return initialBlock
+export const useInitialBlock = () => {
+  return useSelector((state: State) => state.block.initialBlock)
 }

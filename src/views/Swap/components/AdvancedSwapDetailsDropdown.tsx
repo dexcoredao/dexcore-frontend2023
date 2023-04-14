@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 import useLastTruthy from 'hooks/useLast'
 import { AdvancedSwapDetails, AdvancedSwapDetailsProps } from './AdvancedSwapDetails'
@@ -7,6 +8,8 @@ const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   padding-top: 16px;
   padding-bottom: 16px;
   width: 100%;
+  margin-left:auto;
+  margin-right:auto;
   max-width: 400px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.invertedContrast};

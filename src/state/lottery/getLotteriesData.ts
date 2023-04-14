@@ -21,7 +21,7 @@ const applyNodeDataToLotteriesGraphResponse = (
         startTime: nodeRound.startTime,
         status: nodeRound.status,
         id: nodeRound.lotteryId.toString(),
-        ticketPrice: nodeRound.priceTicketInCake,
+        ticketPrice: nodeRound.priceTicketInDexToken,
         totalTickets: '',
         totalUsers: '',
         winningTickets: '',
@@ -90,7 +90,8 @@ export const getGraphLotteries = async (
 
 const getLotteriesData = async (currentLotteryId: string): Promise<LotteryRoundGraphEntity[]> => {
   const idsForNodesCall = getRoundIdsArray(currentLotteryId)
-  const [nodeData, graphResponse] = await Promise.all([fetchMultipleLotteries(idsForNodesCall), getGraphLotteries()])
+  const nodeData = await fetchMultipleLotteries(idsForNodesCall)
+  const graphResponse = await getGraphLotteries()
   const mergedData = applyNodeDataToLotteriesGraphResponse(nodeData, graphResponse)
   return mergedData
 }

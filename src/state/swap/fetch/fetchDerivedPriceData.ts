@@ -1,4 +1,3 @@
-import orderBy from 'lodash/orderBy'
 import { INFO_CLIENT } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
@@ -21,14 +20,14 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
     return null
   }
 
-  // format token BNB price results
+  // format token ALV price results
   const tokenPrices: {
     tokenAddress: string
     timestamp: string
     derivedBNB: number
   }[] = []
 
-  // Get Token prices in BNB
+  // Get Token prices in ALV
   Object.keys(prices).forEach((priceKey) => {
     const timestamp = priceKey.split('t')[1]
     if (timestamp) {
@@ -40,7 +39,9 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
     }
   })
 
-  return orderBy(tokenPrices, (tokenPrice) => parseInt(tokenPrice.timestamp, 10))
+  tokenPrices.sort((a, b) => parseInt(a.timestamp, 10) - parseInt(b.timestamp, 10))
+
+  return tokenPrices
 }
 
 const getInterval = (timeWindow: PairDataTimeWindowEnum) => {
@@ -97,10 +98,8 @@ const fetchDerivedPriceData = async (
       return null
     }
 
-    const [token0DerivedBnb, token1DerivedBnb] = await Promise.all([
-      getTokenDerivedBnbPrices(token0Address, blocks),
-      getTokenDerivedBnbPrices(token1Address, blocks),
-    ])
+    const token0DerivedBnb = await getTokenDerivedBnbPrices(token0Address, blocks)
+    const token1DerivedBnb = await getTokenDerivedBnbPrices(token1Address, blocks)
     return { token0DerivedBnb, token1DerivedBnb }
   } catch (error) {
     console.error('Failed to fetched derived price data for chart', error)

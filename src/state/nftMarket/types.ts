@@ -1,16 +1,47 @@
-import { FetchStatus } from 'config/constants/types'
-import { BigNumberish } from '@ethersproject/bignumber'
+import { BigNumberish } from 'ethers'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
 
+// TODO: Handle the error state on the UI
+export enum NFTMarketInitializationState {
+  UNINITIALIZED = 'UNINITIALIZED',
+  INITIALIZED = 'INITIALIZED',
+  ERROR = 'ERROR',
+}
+
+export enum UserNftInitializationState {
+  UNINITIALIZED = 'UNINITIALIZED',
+  INITIALIZING = 'INITIALIZING',
+  INITIALIZED = 'INITIALIZED',
+  ERROR = 'ERROR',
+}
+
+export enum NftFilterLoadingState {
+  IDLE = 'IDLE',
+  LOADING = 'LOADING',
+}
+
 export interface State {
+  initializationState: NFTMarketInitializationState
   data: {
+    collections: Record<string, Collection> // string is the address
     nfts: Record<string, NftToken[]> // string is the collection address
     filters: Record<string, NftFilter> // string is the collection address
     activityFilters: Record<string, NftActivityFilter> // string is the collection address
-    tryVideoNftMedia: boolean
+    loadingState: {
+      isUpdatingPancakeBunnies: boolean
+      latestPancakeBunniesUpdateAt: number
+    }
+    users: Record<string, User> // string is the address
+    user: UserNftsState
   }
+}
+
+export interface UserNftsState {
+  userNftsInitializationState: UserNftInitializationState
+  nfts: NftToken[]
+  activity: UserActivity
 }
 
 export interface Transaction {
@@ -58,17 +89,17 @@ export enum NftLocation {
 // Market data regarding specific token ID, acquired via subgraph
 export interface TokenMarketData {
   tokenId: string
-  collection: {
-    id: string
-  }
+  metadataUrl: string
   currentAskPrice: string
   currentSeller: string
+  latestTradedPriceInBNB: string
+  tradeVolumeBNB: string
+  totalTrades: string
   isTradable: boolean
-  metadataUrl?: string
-  latestTradedPriceInBNB?: string
-  tradeVolumeBNB?: string
-  totalTrades?: string
-  otherId?: string
+  otherId: string
+  collection?: {
+    id: string
+  }
   updatedAt?: string
   transactionHistory?: Transaction[]
 }
@@ -90,7 +121,7 @@ export interface NftToken {
 }
 
 export interface NftFilter {
-  loadingState: FetchStatus
+  loadingState: NftFilterLoadingState
   activeFilters: Record<string, NftAttribute>
   showOnlyOnSale: boolean
   ordering: {
@@ -101,7 +132,6 @@ export interface NftFilter {
 
 export interface NftActivityFilter {
   typeFilters: MarketEvent[]
-  collectionFilters: string[]
 }
 
 export interface TokenIdWithCollectionAddress {
@@ -122,7 +152,6 @@ export interface Collection {
   id: string
   address: string
   name: string
-  createdAt?: string
   description?: string
   symbol: string
   active: boolean
@@ -283,4 +312,5 @@ export interface UserActivity {
   askOrderHistory: AskOrder[]
   buyTradeHistory: Transaction[]
   sellTradeHistory: Transaction[]
+  initializationState: UserNftInitializationState
 }

@@ -1,5 +1,5 @@
-import { createContext, useCallback, useState } from 'react'
-import kebabCase from 'lodash/kebabCase'
+import React, { createContext, useCallback, useState } from 'react'
+import { kebabCase } from 'lodash'
 import { Toast, toastTypes } from 'components/Toast'
 import { ToastContextApi } from './types'
 
@@ -30,38 +30,22 @@ export const ToastsProvider: React.FC = ({ children }) => {
     [setToasts],
   )
 
-  const toastError = useCallback(
-    (title: Toast['title'], description?: Toast['description']) => {
-      return toast({ title, description, type: toastTypes.DANGER })
-    },
-    [toast],
-  )
-
-  const toastInfo = useCallback(
-    (title: Toast['title'], description?: Toast['description']) => {
-      return toast({ title, description, type: toastTypes.INFO })
-    },
-    [toast],
-  )
-
-  const toastSuccess = useCallback(
-    (title: Toast['title'], description?: Toast['description']) => {
-      return toast({ title, description, type: toastTypes.SUCCESS })
-    },
-    [toast],
-  )
-
-  const toastWarning = useCallback(
-    (title: Toast['title'], description?: Toast['description']) => {
-      return toast({ title, description, type: toastTypes.WARNING })
-    },
-    [toast],
-  )
-
-  const clear = useCallback(() => setToasts([]), [])
-  const remove = useCallback((id: string) => {
+  const toastError = (title: Toast['title'], description?: Toast['description']) => {
+    return toast({ title, description, type: toastTypes.DANGER })
+  }
+  const toastInfo = (title: Toast['title'], description?: Toast['description']) => {
+    return toast({ title, description, type: toastTypes.INFO })
+  }
+  const toastSuccess = (title: Toast['title'], description?: Toast['description']) => {
+    return toast({ title, description, type: toastTypes.SUCCESS })
+  }
+  const toastWarning = (title: Toast['title'], description?: Toast['description']) => {
+    return toast({ title, description, type: toastTypes.WARNING })
+  }
+  const clear = () => setToasts([])
+  const remove = (id: string) => {
     setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id))
-  }, [])
+  }
 
   return (
     <ToastsContext.Provider value={{ toasts, clear, remove, toastError, toastInfo, toastSuccess, toastWarning }}>

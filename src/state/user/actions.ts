@@ -36,6 +36,7 @@ export const removeSerializedPair =
 
 export const muteAudio = createAction<void>('user/muteAudio')
 export const unmuteAudio = createAction<void>('user/unmuteAudio')
+export const toggleTheme = createAction<void>('user/toggleTheme')
 export const updateUserFarmStakedOnly = createAction<{ userFarmStakedOnly: FarmStakedOnly }>(
   'user/updateUserFarmStakedOnly',
 )
@@ -45,15 +46,8 @@ export const updateUserFarmsViewMode = createAction<{ userFarmsViewMode: ViewMod
 export const updateUserPredictionAcceptedRisk = createAction<{ userAcceptedRisk: boolean }>(
   'user/updateUserPredictionAcceptedRisk',
 )
-export const updateUserLimitOrderAcceptedWarning = createAction<{ userAcceptedRisk: boolean }>(
-  'user/userLimitOrderAcceptedWarning',
-)
-
 export const updateUserPredictionChartDisclaimerShow = createAction<{ userShowDisclaimer: boolean }>(
   'user/updateUserPredictionChartDisclaimerShow',
-)
-export const updateUserPredictionChainlinkChartDisclaimerShow = createAction<{ userShowDisclaimer: boolean }>(
-  'user/updateUserPredictionChainlinkChartDisclaimerShow',
 )
 export const updateUserExpertModeAcknowledgementShow = createAction<{ userExpertModeAcknowledgementShow: boolean }>(
   'user/updateUserExpertModeAcknowledgementShow',
@@ -70,4 +64,3 @@ export const hidePhishingWarningBanner = createAction<void>('user/hidePhishingWa
 
 export const setIsExchangeChartDisplayed = createAction<boolean>('user/toggleIsExchangeChartDisplayed')
 export const setChartViewMode = createAction<ChartViewMode>('user/setChartViewMode')
-export const setSubgraphHealthIndicatorDisplayed = createAction<boolean>('user/setSubgraphHealthIndicatorDisplayed')

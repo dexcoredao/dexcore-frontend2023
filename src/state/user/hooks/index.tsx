@@ -1,13 +1,10 @@
 import { ChainId, Pair, Token } from '@pancakeswap/sdk'
-import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
-import farms from 'config/constants/farms'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CHAIN_ID } from 'config/constants/networks'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
+import { useAllTokens } from 'hooks/Tokens'
 import { AppDispatch, AppState } from '../../index'
 import {
   addSerializedPair,
@@ -16,6 +13,7 @@ import {
   muteAudio,
   removeSerializedToken,
   SerializedPair,
+  toggleTheme as toggleThemeAction,
   unmuteAudio,
   updateUserDeadline,
   updateUserExpertMode,
@@ -30,7 +28,6 @@ import {
   ViewMode,
   updateUserFarmsViewMode,
   updateUserPredictionChartDisclaimerShow,
-  updateUserPredictionChainlinkChartDisclaimerShow,
   updateUserPredictionAcceptedRisk,
   updateUserUsernameVisibility,
   updateUserExpertModeAcknowledgementShow,
@@ -38,11 +35,8 @@ import {
   setIsExchangeChartDisplayed,
   ChartViewMode,
   setChartViewMode,
-  setSubgraphHealthIndicatorDisplayed,
-  updateUserLimitOrderAcceptedWarning,
 } from '../actions'
-import { deserializeToken, serializeToken } from './helpers'
-import { GAS_PRICE_GWEI } from '../../types'
+import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
 
 export function useAudioModeManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
@@ -61,14 +55,10 @@ export function useAudioModeManager(): [boolean, () => void] {
 
 export function usePhishingBannerManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
-  const hideTimestampPhishingWarningBanner = useSelector<
-    AppState,
-    AppState['user']['hideTimestampPhishingWarningBanner']
-  >((state) => state.user.hideTimestampPhishingWarningBanner)
-  const now = Date.now()
-  const showPhishingWarningBanner = hideTimestampPhishingWarningBanner
-    ? differenceInDays(now, hideTimestampPhishingWarningBanner) >= 1
-    : true
+  const showPhishingWarningBanner = useSelector<AppState, AppState['user']['showPhishingWarningBanner']>(
+    (state) => state.user.showPhishingWarningBanner,
+  )
+
   const hideBanner = useCallback(() => {
     dispatch(hidePhishingWarningBanner())
   }, [dispatch])
@@ -110,23 +100,6 @@ export function useExchangeChartViewManager() {
   return [chartViewMode, setUserChartViewPreference] as const
 }
 
-export function useSubgraphHealthIndicatorManager() {
-  const dispatch = useDispatch<AppDispatch>()
-  const isSubgraphHealthIndicatorDisplayed = useSelector<
-    AppState,
-    AppState['user']['isSubgraphHealthIndicatorDisplayed']
-  >((state) => state.user.isSubgraphHealthIndicatorDisplayed)
-
-  const setSubgraphHealthIndicatorDisplayedPreference = useCallback(
-    (newIsDisplayed: boolean) => {
-      dispatch(setSubgraphHealthIndicatorDisplayed(newIsDisplayed))
-    },
-    [dispatch],
-  )
-
-  return [isSubgraphHealthIndicatorDisplayed, setSubgraphHealthIndicatorDisplayedPreference] as const
-}
-
 export function useIsExpertMode(): boolean {
   return useSelector<AppState, AppState['user']['userExpertMode']>((state) => state.user.userExpertMode)
 }
@@ -140,6 +113,17 @@ export function useExpertModeManager(): [boolean, () => void] {
   }, [expertMode, dispatch])
 
   return [expertMode, toggleSetExpertMode]
+}
+
+export function useThemeManager(): [boolean, () => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const isDark = true;
+
+  const toggleTheme = useCallback(() => {
+    dispatch(toggleThemeAction())
+  }, [dispatch])
+
+  return [isDark, toggleTheme]
 }
 
 export function useUserSingleHopOnly(): [boolean, (newSingleHopOnly: boolean) => void] {
@@ -259,24 +243,6 @@ export function useUserPredictionAcceptedRisk(): [boolean, (acceptedRisk: boolea
   return [userPredictionAcceptedRisk, setUserPredictionAcceptedRisk]
 }
 
-export function useUserLimitOrderAcceptedWarning(): [boolean, (acceptedRisk: boolean) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const userLimitOrderAcceptedWarning = useSelector<AppState, AppState['user']['userLimitOrderAcceptedWarning']>(
-    (state) => {
-      return state.user.userLimitOrderAcceptedWarning
-    },
-  )
-
-  const setUserLimitOrderAcceptedWarning = useCallback(
-    (acceptedRisk: boolean) => {
-      dispatch(updateUserLimitOrderAcceptedWarning({ userAcceptedRisk: acceptedRisk }))
-    },
-    [dispatch],
-  )
-
-  return [userLimitOrderAcceptedWarning, setUserLimitOrderAcceptedWarning]
-}
-
 export function useUserPredictionChartDisclaimerShow(): [boolean, (showDisclaimer: boolean) => void] {
   const dispatch = useDispatch<AppDispatch>()
   const userPredictionChartDisclaimerShow = useSelector<
@@ -294,25 +260,6 @@ export function useUserPredictionChartDisclaimerShow(): [boolean, (showDisclaime
   )
 
   return [userPredictionChartDisclaimerShow, setPredictionUserChartDisclaimerShow]
-}
-
-export function useUserPredictionChainlinkChartDisclaimerShow(): [boolean, (showDisclaimer: boolean) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const userPredictionChainlinkChartDisclaimerShow = useSelector<
-    AppState,
-    AppState['user']['userPredictionChainlinkChartDisclaimerShow']
-  >((state) => {
-    return state.user.userPredictionChainlinkChartDisclaimerShow
-  })
-
-  const setPredictionUserChainlinkChartDisclaimerShow = useCallback(
-    (showDisclaimer: boolean) => {
-      dispatch(updateUserPredictionChainlinkChartDisclaimerShow({ userShowDisclaimer: showDisclaimer }))
-    },
-    [dispatch],
-  )
-
-  return [userPredictionChainlinkChartDisclaimerShow, setPredictionUserChainlinkChartDisclaimerShow]
 }
 
 export function useUserExpertModeAcknowledgementShow(): [boolean, (showAcknowledgement: boolean) => void] {
@@ -387,7 +334,7 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useGasPrice(): string {
-  const chainId = CHAIN_ID
+  const chainId = process.env.REACT_APP_CHAIN_ID
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
   return chainId === ChainId.MAINNET.toString() ? userGas : GAS_PRICE_GWEI.testnet
 }
@@ -430,7 +377,7 @@ export function usePairAdder(): (pair: Pair) => void {
  * @param tokenB the other token
  */
 export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
-  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'Cake-LP', 'Pancake LPs')
+  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'ELVES-LP', 'ELVES LPs')
 }
 
 /**
@@ -438,18 +385,10 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useActiveWeb3React()
-  const tokens = useOfficialsAndUserAddedTokens()
+  const tokens = useAllTokens()
 
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
-
-  const farmPairs: [Token, Token][] = useMemo(
-    () =>
-      farms
-        .filter((farm) => farm.pid !== 0)
-        .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)]),
-    [],
-  )
 
   // pairs for every token against every base
   const generatedPairs: [Token, Token][] = useMemo(
@@ -459,7 +398,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
             const token = tokens[tokenAddress]
             // for each token on the current chain,
             return (
-              // loop through all bases on the current chain
+              // loop though all bases on the current chain
               (BASES_TO_TRACK_LIQUIDITY_FOR[chainId] ?? [])
                 // to construct pairs of the given token with each base
                 .map((base) => {
@@ -489,8 +428,8 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   }, [savedSerializedPairs, chainId])
 
   const combinedList = useMemo(
-    () => userPairs.concat(generatedPairs).concat(pinnedPairs).concat(farmPairs),
-    [generatedPairs, pinnedPairs, userPairs, farmPairs],
+    () => userPairs.concat(generatedPairs).concat(pinnedPairs),
+    [generatedPairs, pinnedPairs, userPairs],
   )
 
   return useMemo(() => {

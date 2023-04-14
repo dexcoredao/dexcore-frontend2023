@@ -11,7 +11,7 @@ export type TranslatableText =
     }
 export interface Address {
   97?: string
-  56: string
+  3797: string
 }
 
 export interface SerializedToken {
@@ -21,7 +21,6 @@ export interface SerializedToken {
   symbol?: string
   name?: string
   projectLink?: string
-  logoURI?: string
 }
 
 export enum PoolIds {
@@ -49,9 +48,6 @@ export interface Ifo {
   articleUrl: string
   campaignId: string
   tokenOfferingPrice: number
-  description?: string
-  twitterUrl?: string
-  telegramUrl?: string
   version: number
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
@@ -60,19 +56,16 @@ export interface Ifo {
 export enum PoolCategory {
   'COMMUNITY' = 'Community',
   'CORE' = 'Core',
-  'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
+  'BINANCE' = 'Binance', // Pools using native ALV behave differently than pools using a token
   'AUTO' = 'Auto',
 }
 
 interface FarmConfigBaseProps {
   pid: number
-  v1pid?: number
   lpSymbol: string
   lpAddresses: Address
   multiplier?: string
   isCommunity?: boolean
-  auctionHostingStartSeconds?: number
-  auctionHostingEndDate?: string
   dual?: {
     rewardPerBlock: number
     earnLabel: string
@@ -99,7 +92,6 @@ interface PoolConfigBaseProps {
   harvest?: boolean
   isFinished?: boolean
   enableEmergencyWithdraw?: boolean
-  version?: number
 }
 
 export interface SerializedPoolConfig extends PoolConfigBaseProps {
@@ -185,7 +177,7 @@ export interface FarmAuctionBidderConfig {
   lpAddress?: string
 }
 
-// Note: this status is slightly different compared to 'status' config
+// Note: this status is slightly different compared to 'status' comfing
 // from Farm Auction smart contract
 export enum AuctionStatus {
   ToBeAnnounced, // No specific dates/blocks to display
@@ -225,11 +217,4 @@ export interface ConnectedBidder {
   account: string
   isWhitelisted: boolean
   bidderData?: Bidder
-}
-
-export enum FetchStatus {
-  Idle = 'IDLE',
-  Fetching = 'FETCHING',
-  Fetched = 'FETCHED',
-  Failed = 'FAILED',
 }

@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, CloseIcon, IconButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -43,8 +44,8 @@ const PhishingWarningBanner: React.FC = () => {
   const { t } = useTranslation()
   const [, hideBanner] = usePhishingBannerManager()
   const { isMobile, isMd } = useMatchBreakpoints()
-  const warningText = t("please make sure you're visiting https://pancakeswap.finance - check the URL carefully.")
-  const warningTextAsParts = warningText.split(/(https:\/\/pancakeswap.finance)/g)
+  const warningText = t("please make sure you're visiting https://elvesdex.app - check the URL carefully.")
+  const warningTextAsParts = warningText.split(/(https:\/\/elvesdex.app)/g)
   const warningTextComponent = (
     <>
       <Text as="span" color="warning" small bold textTransform="uppercase">
@@ -56,8 +57,8 @@ const PhishingWarningBanner: React.FC = () => {
           key={i}
           small
           as="span"
-          bold={text === 'https://pancakeswap.finance'}
-          color={text === 'https://pancakeswap.finance' ? '#FFFFFF' : '#BDC2C4'}
+          bold={text === 'https://elvesdex.app'}
+          color={text === 'https://elvesdex.app' ? '#FFFFFF' : '#BDC2C4'}
         >
           {text}
         </Text>
@@ -65,7 +66,7 @@ const PhishingWarningBanner: React.FC = () => {
     </>
   )
   return (
-    <Container className="warning-banner">
+    <Container>
       {isMobile || isMd ? (
         <>
           <Box>{warningTextComponent}</Box>

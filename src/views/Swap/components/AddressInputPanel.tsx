@@ -1,12 +1,12 @@
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { Text, Link } from '@pancakeswap/uikit'
-import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
+import useENS from '../../../hooks/ENS/useENS'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 import { AutoColumn } from '../../../components/Layout/Column'
 import { RowBetween } from '../../../components/Layout/Row'
-import { getBscScanLink } from '../../../utils'
+import { getAlveyScanLink } from '../../../utils'
 
 const InputPanel = styled.div`
   display: flex;
@@ -81,7 +81,7 @@ export default function AddressInputPanel({
 
   const { t } = useTranslation()
 
-  const address = isAddress(value) ? value : undefined
+  const { address, loading, name } = useENS(value)
 
   const handleInput = useCallback(
     (event) => {
@@ -92,7 +92,7 @@ export default function AddressInputPanel({
     [onChange],
   )
 
-  const error = Boolean(value.length > 0 && !address)
+  const error = Boolean(value.length > 0 && !loading && !address)
 
   return (
     <InputPanel id={id}>
@@ -102,8 +102,8 @@ export default function AddressInputPanel({
             <RowBetween>
               <Text>{t('Recipient')}</Text>
               {address && chainId && (
-                <Link external small href={getBscScanLink(address, 'address', chainId)}>
-                  ({t('View on BscScan')})
+                <Link external small href={getAlveyScanLink(name ?? address, 'address', chainId)}>
+                  ({t('View on AlveyScan')})
                 </Link>
               )}
             </RowBetween>
@@ -114,7 +114,7 @@ export default function AddressInputPanel({
               autoCorrect="off"
               autoCapitalize="off"
               spellCheck="false"
-              placeholder={t('Wallet Address')}
+              placeholder={t('Wallet Address or ENS name')}
               error={error}
               pattern="^(0x[a-fA-F0-9]{40})$"
               onChange={handleInput}

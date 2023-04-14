@@ -1,10 +1,13 @@
+import React from 'react'
 import styled from 'styled-components'
 import { Card } from '@pancakeswap/uikit'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
-  max-width: 436px;
-  width: 100%;
+  width: 328px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 550px;
+  }
   z-index: 1;
 `
 

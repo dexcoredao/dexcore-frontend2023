@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {
   ButtonMenu,
   ButtonMenuItem,
@@ -11,19 +11,16 @@ import {
   ModalHeader as UIKitModalHeader,
   ModalTitle,
 } from '@pancakeswap/uikit'
-import { parseUnits } from '@ethersproject/units'
+import { parseUnits } from 'ethers/lib/utils'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
-import { useGetBnbBalance } from 'hooks/useTokenBalance'
-import { FetchStatus } from 'config/constants/types'
+import { FetchStatus, useGetBnbBalance } from 'hooks/useTokenBalance'
 import WalletInfo from './WalletInfo'
 import WalletTransactions from './WalletTransactions'
-import WalletWrongNetwork from './WalletWrongNetwork'
 
 export enum WalletView {
   WALLET_INFO,
   TRANSACTIONS,
-  WRONG_NETWORK,
 }
 
 interface WalletModalProps extends InjectedModalProps {
@@ -46,20 +43,11 @@ const WalletModal: React.FC<WalletModalProps> = ({ initialView = WalletView.WALL
   const [view, setView] = useState(initialView)
   const { t } = useTranslation()
   const { balance, fetchStatus } = useGetBnbBalance()
-  const hasLowBnbBalance = fetchStatus === FetchStatus.Fetched && balance.lte(LOW_BNB_BALANCE)
+  const hasLowBnbBalance = fetchStatus === FetchStatus.SUCCESS && balance.lte(LOW_BNB_BALANCE)
 
   const handleClick = (newIndex: number) => {
     setView(newIndex)
   }
-
-  const TabsComponent: React.FC = () => (
-    <Tabs>
-      <ButtonMenu scale="sm" variant="subtle" onItemClick={handleClick} activeIndex={view} fullWidth>
-        <ButtonMenuItem>{t('Wallet')}</ButtonMenuItem>
-        <ButtonMenuItem>{t('Transactions')}</ButtonMenuItem>
-      </ButtonMenu>
-    </Tabs>
-  )
 
   return (
     <ModalContainer title={t('Welcome!')} minWidth="320px">
@@ -71,11 +59,15 @@ const WalletModal: React.FC<WalletModalProps> = ({ initialView = WalletView.WALL
           <CloseIcon width="24px" color="text" />
         </IconButton>
       </ModalHeader>
-      {view !== WalletView.WRONG_NETWORK && <TabsComponent />}
+      <Tabs>
+        <ButtonMenu scale="sm" variant="subtle" onItemClick={handleClick} activeIndex={view} fullWidth>
+          <ButtonMenuItem>{t('Wallet')}</ButtonMenuItem>
+          <ButtonMenuItem>{t('Transactions')}</ButtonMenuItem>
+        </ButtonMenu>
+      </Tabs>
       <ModalBody p="24px" maxWidth="400px" width="100%">
         {view === WalletView.WALLET_INFO && <WalletInfo hasLowBnbBalance={hasLowBnbBalance} onDismiss={onDismiss} />}
         {view === WalletView.TRANSACTIONS && <WalletTransactions />}
-        {view === WalletView.WRONG_NETWORK && <WalletWrongNetwork onDismiss={onDismiss} />}
       </ModalBody>
     </ModalContainer>
   )

@@ -1,8 +1,8 @@
 import { Currency } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import BnbWbnbNotice from './BnbWbnbNotice'
-import { BNB_ADDRESS } from './constants'
+import { ALV_ADDRESS } from './constants'
 import PriceChart from './PriceChart'
 import { getTokenAddress } from './utils'
 
@@ -18,7 +18,6 @@ type PriceChartContainerProps = {
     [key: string]: number
   }
   isMobile?: boolean
-  isFullWidthContainer?: boolean
 }
 
 const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
@@ -30,7 +29,6 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   setIsChartExpanded,
   isChartDisplayed,
   isMobile,
-  isFullWidthContainer = false,
   currentSwapPrice,
 }) => {
   const token0Address = getTokenAddress(inputCurrencyId)
@@ -44,7 +42,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
     return null
   }
 
-  const isBnbWbnb = token0Address === BNB_ADDRESS && token1Address === BNB_ADDRESS
+  const isBnbWbnb = token0Address === ALV_ADDRESS && token1Address === ALV_ADDRESS
 
   if (isBnbWbnb) {
     return <BnbWbnbNotice isDark={isDark} isChartExpanded={isChartExpanded} />
@@ -61,10 +59,28 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
       isChartExpanded={isChartExpanded}
       setIsChartExpanded={setIsChartExpanded}
       isMobile={isMobile}
-      isFullWidthContainer={isFullWidthContainer}
       currentSwapPrice={currentSwapPrice}
     />
   )
 }
 
-export default PriceChartContainer
+export default React.memo(PriceChartContainer, (prev, next) => {
+  const prevToken0Address = getTokenAddress(prev.inputCurrencyId)
+  const nextToken0Address = getTokenAddress(next.inputCurrencyId)
+  const prevToken1Address = getTokenAddress(prev.outputCurrencyId)
+  const nextToken1Address = getTokenAddress(next.outputCurrencyId)
+
+  return (
+    prev.inputCurrencyId === next.inputCurrencyId &&
+    prev.outputCurrencyId === next.outputCurrencyId &&
+    prev.isChartExpanded === next.isChartExpanded &&
+    prev.isChartDisplayed === next.isChartDisplayed &&
+    prev.isMobile === next.isMobile &&
+    prev.setIsChartExpanded === next.setIsChartExpanded &&
+    ((prev.currentSwapPrice !== null &&
+      next.currentSwapPrice !== null &&
+      prev.currentSwapPrice[prevToken0Address] === next.currentSwapPrice[nextToken0Address] &&
+      prev.currentSwapPrice[prevToken1Address] === next.currentSwapPrice[nextToken1Address]) ||
+      (prev.currentSwapPrice === null && next.currentSwapPrice === null))
+  )
+})
