@@ -84,7 +84,7 @@ const ResetCSS = createGlobalStyle`
     width: 8px;
   }
   ::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.textSubtle}; 
+    background: ${({ theme }) => theme.DefaultTheme}; 
     border-radius: 8px;
   }
   ::-webkit-scrollbar-track {
